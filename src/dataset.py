@@ -6,7 +6,7 @@ import os
 import hashlib
 import inspect
 from filecache import filecache
-
+from cli import cli
 
 @filecache
 def load_images(file):
@@ -33,14 +33,21 @@ def load_images(file):
     images = np.array(images, dtype=np.uint8).reshape((images_amount, 28,28))
   return images
 
+
+def load_labels(file):
+  with open(file, "rb") as f:
+    read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
+    pass
+
+    
+
+
 def image_to_file(image, filename):
   image = Image.fromarray(image, 'L')
   image.save(filename)
   image.show()
 
 
-def load_labels(file):
-  pass
 
 
 
