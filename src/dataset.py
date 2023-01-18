@@ -37,7 +37,7 @@ def load_images(file):
 def load_labels(file):
   with open(file, "rb") as f:
     read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
-    pass
+
 
     
 
