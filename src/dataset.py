@@ -25,7 +25,7 @@ def load_images(file):
 
     images = []
 
-    for i in range(images_amount):
+    for i in tqdm(range(images_amount)):
       image = []
       for x in range(rows_amount):
         for y in range(colums_amount):
