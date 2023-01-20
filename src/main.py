@@ -1,10 +1,4 @@
 #!/usr/bin/env python
-from os import listdir
-import importlib
-import dataset
-from dataset import load_images
-import numpy as np
-import os 
 from cli import cli
 
 cli()
