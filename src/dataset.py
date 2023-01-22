@@ -4,7 +4,7 @@ from filecache import filecache
 from tqdm import tqdm
 
 @filecache
-def load_images(file):
+def load_images(file, batch_size=64):
     with open(file, "rb") as f:
         read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
         f.read(3) #Jump over first 3 bytes
@@ -27,10 +27,20 @@ def load_images(file):
             images.append(image)
 
         images = np.array(images, dtype=np.uint8).reshape((images_amount, 28,28))
+    
+    print(images.shape)
+
+    for i in range(len(images)%batch_size):
+        images = np.delete(images, -1, axis=0)
+
+    print(images.shape)
+    images = np.array(np.split(images, len(images)/batch_size))
+
+
     return images
 
 @filecache
-def load_labels(file):
+def load_labels(file, batch_size=64):
     with open(file, "rb") as f:
         read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
         f.read(3) #Jump over first 3 bytes
@@ -48,6 +58,11 @@ def load_labels(file):
             labels.append(label)
 
         labels = np.array(labels, dtype=np.uint8)
+
+    for i in range(len(labels)%batch_size):
+        labels = np.delete(labels, -1)
+    labels = np.array(np.split(labels, len(labels)/batch_size))
+
     return labels
 
 
