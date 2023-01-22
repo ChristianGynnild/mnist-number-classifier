@@ -36,7 +36,7 @@ def load_images(file, batch_size=64):
         images = np.delete(images, -1, axis=0)
 
     print(images.shape)
-    images = np.array(np.split(images, len(images)/batch_size))
+    images = np.array(np.split(images, len(images)/batch_size), dtype=np.float32)
     
     images = torch.from_numpy(images)
     return images
@@ -63,7 +63,7 @@ def load_labels(file, batch_size=64):
 
     for i in range(len(labels)%batch_size):
         labels = np.delete(labels, -1)
-    labels = np.array(np.split(labels, len(labels)/batch_size))
+    labels = np.array(np.split(labels, len(labels)/batch_size), dtype=np.int_)
     
     labels = torch.from_numpy(labels)
     return labels

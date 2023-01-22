@@ -39,9 +39,12 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
 def train(images, labels, model, loss_fn, optimizer):
-    size = len(images)
+    amount_batches = images_test.shape[0]
+    batch_size = images_test.shape[1]
+    size = amount_batches*batch_size
+
     model.train()
-    for batch, (x, y) in zip(images, labels):
+    for batch, (x, y) in enumerate(zip(images, labels)):
         x, y = x.to(device), y.to(device)
 
         # Compute prediction error
@@ -58,8 +61,26 @@ def train(images, labels, model, loss_fn, optimizer):
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
-print(labels_test.shape)
-print(images_test.shape)
-print(images_training.shape)
-print(labels_training.shape)
+def test(images, labels, model, loss_fn):
+    amount_batches = images_test.shape[0]
+    batch_size = images_test.shape[1]
+    size = amount_batches*batch_size
+
+    model.eval()
+    test_loss, correct = 0, 0
+    with torch.no_grad():
+        for x, y in zip(images, labels):
+            x, y = x.to(device), y.to(device)
+            pred = model(x)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+    test_loss /= amount_batches
+    correct /= size
+    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+
+epochs = 5
+for t in range(epochs):
+    print(f"Epoch {t+1}\n-------------------------------")
+    train(images_training, labels_training, model, loss_fn, optimizer)
+    test(images_test, labels_test, model, loss_fn)
 
