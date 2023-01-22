@@ -2,6 +2,8 @@ from PIL import Image
 import numpy as np
 from filecache import filecache
 from tqdm import tqdm
+from torchvision.transforms import ToTensor
+import torch
 
 @filecache
 def load_images(file, batch_size=64):
@@ -35,8 +37,8 @@ def load_images(file, batch_size=64):
 
     print(images.shape)
     images = np.array(np.split(images, len(images)/batch_size))
-
-
+    
+    images = torch.from_numpy(images)
     return images
 
 @filecache
@@ -62,7 +64,8 @@ def load_labels(file, batch_size=64):
     for i in range(len(labels)%batch_size):
         labels = np.delete(labels, -1)
     labels = np.array(np.split(labels, len(labels)/batch_size))
-
+    
+    labels = torch.from_numpy(labels)
     return labels
 
 

@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from torchvision.transforms import ToTensor
 import dataset
 import numpy as np
 
@@ -63,3 +62,4 @@ print(labels_test.shape)
 print(images_test.shape)
 print(images_training.shape)
 print(labels_training.shape)
+
