@@ -6,7 +6,7 @@ from torchvision.transforms import ToTensor
 import torch
 
 @filecache
-def load_images(file, batch_size=64):
+def load_images(file):
     with open(file, "rb") as f:
         read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
         f.read(3) #Jump over first 3 bytes
@@ -28,21 +28,13 @@ def load_images(file, batch_size=64):
                     image.append(read_bytes(1))
             images.append(image)
 
-        images = np.array(images, dtype=np.uint8).reshape((images_amount, 28,28))
+        images = np.array(images, dtype=np.float32).reshape((images_amount, 28,28))
     
-    print(images.shape)
 
-    for i in range(len(images)%batch_size):
-        images = np.delete(images, -1, axis=0)
-
-    print(images.shape)
-    images = np.array(np.split(images, len(images)/batch_size), dtype=np.float32)
-    
-    images = torch.from_numpy(images)
     return images
 
 @filecache
-def load_labels(file, batch_size=64):
+def load_labels(file):
     with open(file, "rb") as f:
         read_bytes = lambda byte_size:int.from_bytes(f.read(byte_size), byteorder="big")
         f.read(3) #Jump over first 3 bytes
@@ -61,15 +53,16 @@ def load_labels(file, batch_size=64):
 
         labels = np.array(labels, dtype=np.uint8)
 
-    for i in range(len(labels)%batch_size):
-        labels = np.delete(labels, -1)
-    labels = np.array(np.split(labels, len(labels)/batch_size), dtype=np.int_)
     
-    labels = torch.from_numpy(labels)
     return labels
 
+def to_batches(array, batch_size=64):
+    for i in range(len(array)%batch_size):
+        array = np.delete(array, -1,  axis=0)
+    array = np.array(np.split(array, len(array)/batch_size))
 
-        
+    return array
+
 
 
 def image_to_file(image, filename):

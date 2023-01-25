@@ -84,3 +84,4 @@ for t in range(epochs):
     train(images_training, labels_training, model, loss_fn, optimizer)
     test(images_test, labels_test, model, loss_fn)
 
+# load_labels = lambda filepath: torch.from_numpy(to_batches(load_labels(filepath)))        
