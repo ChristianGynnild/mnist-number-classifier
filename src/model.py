@@ -6,6 +6,9 @@ import numpy as np
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
 
+MODEL_WEIGHTS_PATH = "model_weights"
+
+
 # Define model
 class NeuralNetwork(nn.Module):
     def __init__(self):
@@ -68,7 +71,7 @@ def test(images, labels, model, loss_fn):
 
 
 
-def train_and_test():
+def train_and_test(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_images(filepath)))        
     load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))        
 
@@ -79,15 +82,21 @@ def train_and_test():
 
     model = NeuralNetwork().to(device)
     print(model)
+    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
+    except Exception:pass
+    
 
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
-    epochs = 5
+
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train(images_training, labels_training, model, loss_fn, optimizer)
         test(images_test, labels_test, model, loss_fn)
+        if (t+1)%5 == 0:
+            torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
+            print(f"Saved PyTorch Model State to {MODEL_WEIGHTS_PATH}")
 
-
-
+    torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
+    print(f"Saved PyTorch Model State to {MODEL_WEIGHTS_PATH}")
