@@ -1,5 +1,6 @@
 import click
 import dataset
+import model
 
 @click.group()
 def cli():
@@ -8,6 +9,10 @@ def cli():
 @cli.group()
 def test():
     pass
+
+@cli.command()
+def train():
+    model.train_and_test()
 
 @test.command()
 def load_label():
