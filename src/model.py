@@ -18,9 +18,10 @@ class NeuralNetwork(nn.Module):
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(28*28, 512),
             nn.ReLU(),
-            nn.Linear(512, 512),
+            nn.Linear(512, 718),
             nn.ReLU(),
-            nn.Linear(512, 10)
+            nn.Linear(718, 10),
+            nn.Softmax(),
         )
 
     def forward(self, x):
