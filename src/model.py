@@ -4,32 +4,11 @@ import dataset
 import numpy as np
 from PIL import Image
 
+from constants import MODEL_WEIGHTS_PATH, TRAINING_IMAGES_PATH, TRAINING_LABELS_PATH, TEST_IMAGES_PATH, TEST_LABELS_PATH
+from model_architectures import NeuralNetwork
+
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
-
-MODEL_WEIGHTS_PATH = "model_weights"
-
-
-# Define model
-class NeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
-            nn.ReLU(),
-            nn.Linear(512, 718),
-            nn.ReLU(),
-            nn.Linear(718, 10),
-            nn.Softmax(),
-        )
-
-    def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
-
-
 
 def train(images, labels, model, loss_fn, optimizer):
     amount_batches = images.shape[0]
@@ -77,10 +56,10 @@ def train_and_test(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_images(filepath)))        
     load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))        
 
-    images_training = load_images("datasets/train-images-idx3-ubyte")
-    images_test =     load_images("datasets/t10k-images-idx3-ubyte")
-    labels_training = load_labels("datasets/train-labels-idx1-ubyte")
-    labels_test =     load_labels("datasets/t10k-labels-idx1-ubyte")
+    images_training = load_images(TRAINING_IMAGES_PATH)
+    images_test =     load_images(TEST_IMAGES_PATH)
+    labels_training = load_labels(TRAINING_LABELS_PATH)
+    labels_test =     load_labels(TEST_LABELS_PATH)
 
     model = NeuralNetwork().to(device)
     print(model)
