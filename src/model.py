@@ -10,13 +10,13 @@ from model_architectures import NeuralNetwork
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
 
-def train(images, labels, model, loss_fn, optimizer):
-    amount_batches = images.shape[0]
-    batch_size = images.shape[1]
+def train(model, features, labels, loss_fn, optimizer):
+    amount_batches = features.shape[0]
+    batch_size = features.shape[1]
     size = amount_batches*batch_size
 
     model.train()
-    for batch, (x, y) in enumerate(zip(images, labels)):
+    for batch, (x, y) in enumerate(zip(features, labels)):
         x, y = x.to(device), y.to(device)
 
         # Compute prediction error
@@ -33,15 +33,15 @@ def train(images, labels, model, loss_fn, optimizer):
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
-def test(images, labels, model, loss_fn):
-    amount_batches = images.shape[0]
-    batch_size = images.shape[1]
+def test(model, features, labels, loss_fn):
+    amount_batches = features.shape[0]
+    batch_size = features.shape[1]
     size = amount_batches*batch_size
 
     model.eval()
     test_loss, correct = 0, 0
     with torch.no_grad():
-        for x, y in zip(images, labels):
+        for x, y in zip(features, labels):
             x, y = x.to(device), y.to(device)
             pred = model(x)
             test_loss += loss_fn(pred, y).item()
@@ -83,7 +83,6 @@ def train_and_test(epochs=5):
     print(f"Saved PyTorch Model State to {MODEL_WEIGHTS_PATH}")
 
 def predict(image_path):
-
     image = Image.open(image_path)
     print("Opened:", image_path)
     print("shape:",image.size)
