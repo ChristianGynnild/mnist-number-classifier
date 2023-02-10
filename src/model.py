@@ -10,7 +10,7 @@ from model_architectures import NeuralNetwork
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
 
-def train(model, features, labels, loss_function, optimizer):
+def training_step(model, features, labels, loss_function, optimizer):
     batches_amount = features.shape[0]
     batch_size = features.shape[1]
     dataset_size = batches_amount*batch_size
@@ -52,7 +52,7 @@ def test(model, features, labels, loss_function):
 
 
 
-def train_and_test(epochs=5):
+def train(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_images(filepath)))        
     load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))        
 
@@ -73,7 +73,7 @@ def train_and_test(epochs=5):
 
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
-        train(model, training_images, training_labels, loss_function, optimizer)
+        training_step(model, training_images, training_labels, loss_function, optimizer)
         test(model, test_images, test_labels, loss_function)
         if (t+1)%5 == 0:
             torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
