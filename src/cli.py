@@ -2,6 +2,7 @@ import click
 import dataset as _dataset
 import model
 import constants
+import numpy as np
 
 @click.group()
 def cli():
@@ -25,8 +26,7 @@ def test():
 def dataset():
     print(constants.TRAINING_IMAGES_PATH)
     data = _dataset.load_images(constants.TRAINING_IMAGES_PATH)
-    for x in range(28):
-        for y in range(28):
-            print(data[0][x][y])
-    _dataset.image_to_file(data[0], "image.png")
+    
+    
+    _dataset.image_to_file(data[5], "image1.png")
     

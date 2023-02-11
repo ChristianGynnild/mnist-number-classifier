@@ -30,6 +30,12 @@ def load_images(file):
 
         images = np.array(images, dtype=np.float32).reshape((images_amount, 28,28))
     
+    #Useing standard deviation to make images sharper
+    images = images/255
+    mean_px = images.mean().astype(np.float32)
+    std_px = images.std().astype(np.float32)
+    images = (images - mean_px)/(std_px)
+    images = images*255
 
     return images
 
