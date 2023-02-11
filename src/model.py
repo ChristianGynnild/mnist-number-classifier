@@ -53,7 +53,7 @@ def test(model, features, labels, loss_function):
 
 
 def train(epochs=5):
-    load_images = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_images(filepath)))        
+    load_images = lambda filepath: torch.from_numpy(dataset.to_batches(np.array(list(map(dataset.image_preprocessing, dataset.load_images(filepath))))))     
     load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))
 
     training_images = load_images(TRAINING_IMAGES_PATH)
@@ -108,7 +108,7 @@ def predict(image_path):
 
     image = image.convert('L') # Turn the picture grayscale
 
-    array = np.array(image, dtype=np.float32).reshape((1,28,28))
+    array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1,28,28)))
 
 
     model = NeuralNetwork().to(device)

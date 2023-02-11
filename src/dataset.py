@@ -40,7 +40,7 @@ def image_preprocessing(image):
     
     image = (image - mean_px)/(std_px)
     image = np.clip(image, 0, 1)
-    image = image*255
+    image *= 255
     return image
 
 
