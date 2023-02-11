@@ -66,6 +66,7 @@ def to_batches(array, batch_size=64):
 
 
 def image_to_file(image, filename):
-    image = Image.fromarray(image, 'L')
+    image = Image.fromarray(image)
+    image = image.convert("RGB")
     image.save(filename)
     image.show()
