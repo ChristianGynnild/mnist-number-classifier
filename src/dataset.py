@@ -37,12 +37,9 @@ def image_preprocessing(image):
     image = image/255
     mean_px = image.mean().astype(np.float32)
     std_px = image.std().astype(np.float32)
-    print(mean_px)
-    print("hm")
-    print(std_px)
     
     image = (image - mean_px)/(std_px)
-    #image = np.clip(image, 0, 1)
+    image = np.clip(image, 0, 1)
     image = image*255
     return image
 
