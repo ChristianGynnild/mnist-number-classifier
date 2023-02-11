@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 
 from constants import MODEL_WEIGHTS_PATH, TRAINING_IMAGES_PATH, TRAINING_LABELS_PATH, TEST_IMAGES_PATH, TEST_LABELS_PATH
-from model_architectures import NeuralNetwork
+from model_architectures import LinearNetwork as NeuralNetwork
 
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
@@ -54,7 +54,7 @@ def test(model, features, labels, loss_function):
 
 def train(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_images(filepath)))        
-    load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))        
+    load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))
 
     training_images = load_images(TRAINING_IMAGES_PATH)
     training_labels = load_labels(TRAINING_LABELS_PATH)

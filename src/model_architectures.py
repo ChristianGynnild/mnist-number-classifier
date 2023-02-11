@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-class NeuralNetwork(nn.Module):
+class LinearNetwork(nn.Module):
     def __init__(self):
         super().__init__()
         self.flatten = nn.Flatten()
@@ -18,3 +18,15 @@ class NeuralNetwork(nn.Module):
         x = self.flatten(x)
         logits = self.linear_relu_stack(x)
         return logits
+
+
+class ConvolutionalNetwork(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.convolution_stack = nn.Sequential(
+            
+        )
+
+    def forward(self, x):
+        x = self.convolution_stack(x)
+        return x
