@@ -29,15 +29,23 @@ def load_images(file):
             images.append(image)
 
         images = np.array(images, dtype=np.float32).reshape((images_amount, 28,28))
-    
-    #Useing standard deviation to make images sharper
-    images = images/255
-    mean_px = images.mean().astype(np.float32)
-    std_px = images.std().astype(np.float32)
-    images = (images - mean_px)/(std_px)
-    images = images*255
 
     return images
+
+
+def image_preprocessing(image): 
+    image = image/255
+    mean_px = image.mean().astype(np.float32)
+    std_px = image.std().astype(np.float32)
+    print(mean_px)
+    print("hm")
+    print(std_px)
+    
+    image = (image - mean_px)/(std_px)
+    #image = np.clip(image, 0, 1)
+    image = image*255
+    return image
+
 
 @filecache
 def load_labels(file):
