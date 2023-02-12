@@ -23,10 +23,41 @@ class LinearNetwork(nn.Module):
 class ConvolutionalNetwork(nn.Module):
     def __init__(self):
         super().__init__()
-        self.convolution_stack = nn.Sequential(
-            
+        self.cnn_model = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=5, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(32, 32, kernel_size=5, stride=1),
+            #nn.BatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.Conv2d(32, 64, kernel_size=3, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(32, 64, kernel_size=3, stride=1, bias=False),
+            #nn.BatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.Flatten(),
         )
+        self.linear_relu_model = nn.Sequential(
+            nn.Linear(400,256, bias=False),
+            #nn.BatchNorm2d(),
+            nn.ReLU(),
+            nn.Linear(256,128, bias=False),
+            #nn.BatchNorm2d(),
+            nn.ReLU(),
+            nn.Linear(128, 84, bias=False),
+            #nn.BatchNorm2d(),
+            nn.ReLU(),
+            nn.Dropout(0.25),
+            nn.Linear(84, 10),
+            nn.Softmax()            
+        )
+    
 
     def forward(self, x):
-        x = self.convolution_stack(x)
+        x = self.cnn_model(x)
+        #x = x.view(-1, 16*5*5)
+        x = self.linear_relu_model(x)
         return x
