@@ -9,8 +9,9 @@ def cli():
     pass
 
 @cli.command()
-def train():
-    model.train()
+@click.argument('ephocs')
+def train(ephocs):
+    model.train(int(ephocs))
 
 @cli.command()
 @click.argument('image_path')
