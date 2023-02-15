@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 
 from constants import MODEL_WEIGHTS_PATH, TRAINING_IMAGES_PATH, TRAINING_LABELS_PATH, TEST_IMAGES_PATH, TEST_LABELS_PATH
-from model_architectures import LinearNetwork as NeuralNetwork
+from model_architectures import ConvolutionalNetwork as NeuralNetwork
 
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 print(f"Using {device} device")
@@ -17,12 +17,13 @@ def training_step(model, features, labels, loss_function, optimizer):
 
     model.train()
     for batch, (x, y) in enumerate(zip(features, labels)):
+        x = x.reshape(x.shape[0], 1, x.shape[1], x.shape[2])
         x, y = x.to(device), y.to(device)
 
-        # Compute prediction error
+        # Compute prediction error        
         prediction = model(x)
         loss = loss_function(prediction, y)
-
+        
         # Backpropagation
         optimizer.zero_grad()
         loss.backward()
@@ -42,6 +43,7 @@ def test(model, features, labels, loss_function):
     test_loss, correct = 0, 0
     with torch.no_grad():
         for x, y in zip(features, labels):
+            x = x.reshape(x.shape[0], 1, x.shape[1], x.shape[2])
             x, y = x.to(device), y.to(device)
             prediction = model(x)
             test_loss += loss_function(prediction, y).item()
