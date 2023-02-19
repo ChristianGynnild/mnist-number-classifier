@@ -1,8 +1,7 @@
 import click
-import dataset as _dataset
-import model
-import constants
 import numpy as np
+from .ai import constants, model_architectures, model, dataset
+
 
 @click.group()
 def cli():

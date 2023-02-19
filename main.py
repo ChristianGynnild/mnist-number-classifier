@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-from cli import cli
+from src.cli import cli
 
 cli()
