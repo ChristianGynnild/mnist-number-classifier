@@ -1,6 +1,7 @@
+#!/usr/bin/env python
 import click
 import numpy as np
-from .ai import constants, model_architectures, model, dataset
+from ai import constants, model_architectures, model, dataset as _dataset
 
 
 @click.group()
@@ -30,3 +31,5 @@ def dataset():
     
     _dataset.image_to_file(data[5], "image1.png")
     
+    
+cli()
