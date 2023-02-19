@@ -1,0 +1,12 @@
+[[bin]]
+name = "paint_canvas"
+path = "paint_canvas/main.rs"
+
+[package]
+name = "mnist-number-classifier"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
