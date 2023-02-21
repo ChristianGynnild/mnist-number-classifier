@@ -1,29 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn WGPU</title>
-    <style>
-        canvas {
-            background-color: black;
-        }
-    </style>
-</head>
-
-<body id="wasm-example">
-  <script type="module">
-      import init from "./pkg/paint_canvas.js";
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+  </head>
+  <body id="wasm-example">
+    <script type="module">
+      import init from "/static/pkg/paint_canvas.js";
       init().then(() => {
-          console.log("WASM Loaded");
+        console.log("WASM Loaded")
       });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
-
- 
-
- 
