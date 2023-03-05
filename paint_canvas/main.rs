@@ -1,6 +1,6 @@
 use paint_canvas::run;
 
 fn main() {
-    run();
+    pollster::block_on(run());
 }
 
