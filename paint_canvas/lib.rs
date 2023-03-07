@@ -8,6 +8,30 @@ use winit::{
     window::WindowBuilder,
 };
 
+fn resize(adapter:wgpu::Adapter, device:wgpu::Device, surface:wgpu::Surface, new_size: winit::dpi::PhysicalSize<u32>){
+    if new_size.width > 0 && new_size.height > 0 {
+        let surface_caps = surface.get_capabilities(&adapter);
+        // Shader code in this tutorial assumes an sRGB surface texture. Using a different
+        // one will result all the colors coming out darker. If you want to support non
+        // sRGB surfaces, you'll need to account for that when drawing to the frame.
+        let surface_format = surface_caps.formats.iter()
+            .copied()
+            .filter(|f| f.describe().srgb)
+            .next()
+            .unwrap_or(surface_caps.formats[0]);
+        let config = wgpu::SurfaceConfiguration {
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+            format: surface_format,
+            width: new_size.width,
+            height: new_size.height,
+            present_mode: surface_caps.present_modes[0],
+            alpha_mode: surface_caps.alpha_modes[0],
+            view_formats: vec![],
+        };
+        surface.configure(&device, &config);
+    }
+}
+
 #[cfg_attr(target_arch="wasm32", wasm_bindgen(start))]
 pub async fn run() {
     cfg_if::cfg_if! {
@@ -75,25 +99,7 @@ pub async fn run() {
         None, // Trace path
     ).await.unwrap();
 
-    let surface_caps = surface.get_capabilities(&adapter);
-    // Shader code in this tutorial assumes an sRGB surface texture. Using a different
-    // one will result all the colors coming out darker. If you want to support non
-    // sRGB surfaces, you'll need to account for that when drawing to the frame.
-    let surface_format = surface_caps.formats.iter()
-        .copied()
-        .filter(|f| f.describe().srgb)
-        .next()
-        .unwrap_or(surface_caps.formats[0]);
-    let config = wgpu::SurfaceConfiguration {
-        usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
-        format: surface_format,
-        width: window_size.width,
-        height: window_size.height,
-        present_mode: surface_caps.present_modes[0],
-        alpha_mode: surface_caps.alpha_modes[0],
-        view_formats: vec![],
-    };
-    surface.configure(&device, &config);
+    resize(adapter, device, surface, winit::dpi::PhysicalSize{width:1000, height:500});
 
     event_loop.run(move |event, _, control_flow| match event {
         Event::WindowEvent {
@@ -110,6 +116,7 @@ pub async fn run() {
                     },
                 ..
             } => *control_flow = ControlFlow::Exit,
+            
             _ => {}
         },
         _ => {}
