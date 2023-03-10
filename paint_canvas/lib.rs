@@ -8,7 +8,7 @@ use winit::{
     window::WindowBuilder,
 };
 
-fn render(device:wgpu::Device, queue:wgpu::Queue, surface:wgpu::Surface)-> Result<(), wgpu::SurfaceError>{
+fn render(device:&wgpu::Device, queue:&wgpu::Queue, surface:&wgpu::Surface)-> Result<(), wgpu::SurfaceError>{
     let output = surface.get_current_texture()?;
     let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
         let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -43,7 +43,7 @@ fn render(device:wgpu::Device, queue:wgpu::Queue, surface:wgpu::Surface)-> Resul
 
 
 
-fn resize(adapter:wgpu::Adapter, device:wgpu::Device, surface:wgpu::Surface, new_size: winit::dpi::PhysicalSize<u32>){
+fn resize(adapter:&wgpu::Adapter, device:&wgpu::Device, surface:&wgpu::Surface, new_size: winit::dpi::PhysicalSize<u32>){
     if new_size.width > 0 && new_size.height > 0 {
         let surface_caps = surface.get_capabilities(&adapter);
         // Shader code in this tutorial assumes an sRGB surface texture. Using a different
@@ -134,26 +134,52 @@ pub async fn run() {
         None, // Trace path
     ).await.unwrap();
 
-    resize(adapter, device, surface, winit::dpi::PhysicalSize{width:1000, height:500});
+    resize(&adapter, &device, &surface, winit::dpi::PhysicalSize{width:1000, height:500});
 
-    event_loop.run(move |event, _, control_flow| match event {
-        Event::WindowEvent {
-            ref event,
-            window_id,
-        } if window_id == window.id() => match event {
-            WindowEvent::CloseRequested
-            | WindowEvent::KeyboardInput {
-                input:
-                    KeyboardInput {
-                        state: ElementState::Pressed,
-                        virtual_keycode: Some(VirtualKeyCode::Escape),
+    event_loop.run(move |event, _, control_flow| {
+        match event {
+            Event::WindowEvent {
+                ref event,
+                window_id,
+            } if window_id == window.id() => /*if !state.input(event)*/ {
+                match event {
+                    WindowEvent::CloseRequested
+                    | WindowEvent::KeyboardInput {
+                        input:
+                            KeyboardInput {
+                                state: ElementState::Pressed,
+                                virtual_keycode: Some(VirtualKeyCode::Escape),
+                                ..
+                            },
                         ..
-                    },
-                ..
-            } => *control_flow = ControlFlow::Exit,
+                    } => *control_flow = ControlFlow::Exit,
+                    WindowEvent::Resized(physical_size) => {
+                        resize(&adapter, &device, &surface, *physical_size);
+                    }
+                    WindowEvent::ScaleFactorChanged { new_inner_size, .. } => {
+                        resize(&adapter, &device, &surface, **new_inner_size);
+                    }
+                    _ => {}
+                }
+            }
+            Event::RedrawRequested(window_id) if window_id == window.id() => {
+                match render(&device, &queue, &surface) {
+                    Ok(_) => {}
+                    // Reconfigure the surface if lost
+                    Err(wgpu::SurfaceError::Lost) => resize(&adapter, &device, &surface,window_size),
+                    // The system is out of memory, we should probably quit
+                    Err(wgpu::SurfaceError::OutOfMemory) => *control_flow = ControlFlow::Exit,
+                    // All other errors (Outdated, Timeout) should be resolved by the next frame
+                    Err(e) => eprintln!("{:?}", e),
+                }
+            }
+            Event::MainEventsCleared => {
+                // RedrawRequested will only trigger once, unless we manually
+                // request it.
+                window.request_redraw();
+            }
             _ => {}
-        },
-        _ => {}
-    });
+        }
+    });    
 }
 
