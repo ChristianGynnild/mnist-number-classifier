@@ -1,6 +1,7 @@
 <main>
   <div class="box" style="width:100px; width:{innerWidth*0.9}px; height:{innerHeight*0.9}px">
-   
+
+    <P5 {sketch} />
 
   </div>
 </main>
@@ -8,11 +9,42 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <script>
-  let innerWidth = 0
-  let innerHeight = 0
+  let innerWidth = 0;
+  let innerHeight = 0;
   
   $: condition = innerWidth*1.33 <= innerHeight
+
+  import P5 from 'p5-svelte';
+  let circleWidth = 55;
+  let circleHeight = 55;
+
+  let width = 0;
+  let height = 0;
+
+  $: width = innerWidth*0.9;
+  $: height = innerHeight*0.9;
+
+  const sketch = (p5) => {
+    p5.draw = () => {
+      p5.ellipse(width / 2, height / 2, circleWidth, circleHeight);
+    };
+
+
+    p5.setup = () => {
+      p5.createCanvas(width, height);
+    };
+
+    
+
+    p5.windowResized= () => {
+      p5.resizeCanvas(width, height, true);
+    }
+  };
+
+
 </script>
+
+
 
 <style>
   .box{
@@ -27,6 +59,8 @@
     margin: auto;
   }
 </style>
+
+
 
 <!-- <script>
   import svelteLogo from './assets/svelte.svg'
