@@ -1,4 +1,34 @@
+<main>
+  <div class="box" style="width:100px; width:{innerWidth*0.9}px; height:{innerHeight*0.9}px">
+   
+
+  </div>
+</main>
+
+<svelte:window bind:innerWidth bind:innerHeight />
+
 <script>
+  let innerWidth = 0
+  let innerHeight = 0
+  
+  $: condition = innerWidth*1.33 <= innerHeight
+</script>
+
+<style>
+  .box{
+    background-color:cadetblue;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    margin: auto;
+  }
+</style>
+
+<!-- <script>
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
 </script>
@@ -44,3 +74,4 @@
     color: #888;
   }
 </style>
+ -->
