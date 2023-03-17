@@ -9,35 +9,58 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <script>
+  import p5Svelte from 'p5-svelte';
+  import P5 from 'p5-svelte';
+
   let innerWidth = 0;
   let innerHeight = 0;
   
   $: condition = innerWidth*1.33 <= innerHeight
 
-  import P5 from 'p5-svelte';
   let circleWidth = 55;
   let circleHeight = 55;
 
-  let width = 0;
-  let height = 0;
+  let canvasWidth = 0;
+  let canvasHeight = 0;
 
-  $: width = innerWidth*0.9;
-  $: height = innerHeight*0.9;
+  $: canvasWidth = innerWidth*0.9;
+  $: canvasHeight = innerHeight*0.9;
+
+  let previousCanvasWidth = canvasWidth;
+  let previousCanvasHeight = canvasHeight;
+
+  var drawingBuffer;
 
   const sketch = (p5) => {
     p5.draw = () => {
-      p5.ellipse(width / 2, height / 2, circleWidth, circleHeight);
+      if (p5.mouseIsPressed) {
+        drawingBuffer.fill(0);
+        drawingBuffer.ellipse(p5.mouseX, p5.mouseY, 80, 80);
+      } 
+
+      p5.image(drawingBuffer, 0, 0);
     };
 
 
     p5.setup = () => {
-      p5.createCanvas(width, height);
+      p5.createCanvas(canvasWidth, canvasHeight);
+      p5.background(200, 0, 100);
+      drawingBuffer = p5.createGraphics(canvasWidth, canvasHeight);
+      drawingBuffer.background(200, 0, 100);
     };
 
     
 
     p5.windowResized= () => {
-      p5.resizeCanvas(width, height, true);
+      p5.resizeCanvas(canvasWidth, canvasHeight, true);
+
+      let tempDrawingBuffer = p5.createGraphics(canvasWidth, canvasHeight);
+      tempDrawingBuffer.image(drawingBuffer, 0, 0, canvasWidth, canvasHeight, 0, 0, previousCanvasWidth, previousCanvasHeight);
+
+      drawingBuffer = tempDrawingBuffer;
+
+      previousCanvasWidth = canvasWidth;
+      previousCanvasHeight = canvasHeight;
     }
   };
 
