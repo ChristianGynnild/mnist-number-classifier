@@ -23,11 +23,11 @@
   let canvasWidth = 0;
   let canvasHeight = 0;
 
+  let bufferWidth = 1000;
+  let bufferHeight = 1000;
+
   $: canvasWidth = innerWidth*0.9;
   $: canvasHeight = innerHeight*0.9;
-
-  let previousCanvasWidth = canvasWidth;
-  let previousCanvasHeight = canvasHeight;
 
   var drawingBuffer;
 
@@ -35,17 +35,17 @@
     p5.draw = () => {
       if (p5.mouseIsPressed) {
         drawingBuffer.fill(0);
-        drawingBuffer.ellipse(p5.mouseX, p5.mouseY, 80, 80);
+        drawingBuffer.ellipse(p5.mouseX/canvasWidth*bufferWidth, p5.mouseY/canvasHeight*bufferHeight, 80, 80);
       } 
 
-      p5.image(drawingBuffer, 0, 0);
+      p5.image(drawingBuffer, 0, 0, canvasWidth, canvasHeight);
     };
 
 
     p5.setup = () => {
       p5.createCanvas(canvasWidth, canvasHeight);
       p5.background(200, 0, 100);
-      drawingBuffer = p5.createGraphics(canvasWidth, canvasHeight);
+      drawingBuffer = p5.createGraphics(bufferWidth, bufferHeight);
       drawingBuffer.background(200, 0, 100);
     };
 
@@ -53,14 +53,6 @@
 
     p5.windowResized= () => {
       p5.resizeCanvas(canvasWidth, canvasHeight, true);
-
-      let tempDrawingBuffer = p5.createGraphics(canvasWidth, canvasHeight);
-      tempDrawingBuffer.image(drawingBuffer, 0, 0, canvasWidth, canvasHeight, 0, 0, previousCanvasWidth, previousCanvasHeight);
-
-      drawingBuffer = tempDrawingBuffer;
-
-      previousCanvasWidth = canvasWidth;
-      previousCanvasHeight = canvasHeight;
     }
   };
 
