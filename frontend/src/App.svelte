@@ -1,8 +1,9 @@
 <main>
-  <div class="box" style="width:100px; width:{innerWidth*0.9}px; height:{innerHeight*0.9}px">
-
-    <P5 {sketch} />
-
+  <div class="centered" style="width:{innerWidth*0.9}px; height:{innerHeight*0.9}px; background-color:cadetblue">
+    
+    <div class="centered" style="width:{canvasSize}px; height:{canvasSize}px">
+        <P5 {sketch} />
+    </div>
   </div>
 </main>
 
@@ -29,21 +30,23 @@
   $: canvasWidth = innerWidth*0.9;
   $: canvasHeight = innerHeight*0.9;
 
+  $: canvasSize = Math.min(canvasWidth, canvasHeight);
+
   var drawingBuffer;
 
   const sketch = (p5) => {
     p5.draw = () => {
       if (p5.mouseIsPressed) {
         drawingBuffer.fill(0);
-        drawingBuffer.ellipse(p5.mouseX/canvasWidth*bufferWidth, p5.mouseY/canvasHeight*bufferHeight, 80, 80);
+        drawingBuffer.ellipse(p5.mouseX/canvasSize*bufferWidth, p5.mouseY/canvasSize*bufferHeight, 80, 80);
       } 
 
-      p5.image(drawingBuffer, 0, 0, canvasWidth, canvasHeight);
+      p5.image(drawingBuffer, 0, 0, canvasSize, canvasSize);
     };
 
 
     p5.setup = () => {
-      p5.createCanvas(canvasWidth, canvasHeight);
+      p5.createCanvas(canvasSize, canvasSize);
       p5.background(200, 0, 100);
       drawingBuffer = p5.createGraphics(bufferWidth, bufferHeight);
       drawingBuffer.background(200, 0, 100);
@@ -52,7 +55,7 @@
     
 
     p5.windowResized= () => {
-      p5.resizeCanvas(canvasWidth, canvasHeight, true);
+      p5.resizeCanvas(canvasSize, canvasSize, true);
     }
   };
 
@@ -62,9 +65,7 @@
 
 
 <style>
-  .box{
-    background-color:cadetblue;
-
+  .centered{     
     position: absolute;
     top:0;
     bottom: 0;
