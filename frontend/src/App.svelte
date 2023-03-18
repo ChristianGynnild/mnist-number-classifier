@@ -1,7 +1,7 @@
 <main>
-  <div class="centered" style="width:{innerWidth*0.9}px; height:{innerHeight*0.9}px; background-color:cadetblue">
+    <div class="absolute-centered" style="width:{canvasWidth}px; height:{canvasHeight}px; background-color:cadetblue">
     
-    <div class="centered" style="width:{canvasSize}px; height:{canvasSize}px">
+    <div class="relative-centered" style="width:{canvasSize}px; height:{canvasSize}px">
         <P5 {sketch} />
     </div>
   </div>
@@ -65,7 +65,17 @@
 
 
 <style>
-  .centered{     
+  .relative-centered{     
+    position: relative;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    margin: auto;
+
+  }
+  .absolute-centered{     
     position: absolute;
     top:0;
     bottom: 0;
@@ -73,6 +83,7 @@
     right: 0;
     
     margin: auto;
+
   }
 </style>
 
