@@ -1,5 +1,5 @@
 <main>
-  <div class="centered" style="width:{innerWidth*0.9}px; height:{innerHeight*0.9}px; background-color:cadetblue">
+  <div class="canvas-container centered" style="width:{innerWidth*0.9}px; height:{innerHeight*0.9}px; background-color:cadetblue">
     
     <div class="centered" style="width:{canvasSize}px; height:{canvasSize}px">
         <P5 {sketch} />
@@ -65,6 +65,10 @@
 
 
 <style>
+  .canvas-container{
+    position: absolute;
+  }
+
   .centered{     
     position: absolute;
     top:0;
