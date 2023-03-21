@@ -1,15 +1,36 @@
 <style>
+  
+  ul {
+  position: relative;
 
-  .bar{
-
-
+  list-style-type: none;
+  
+  margin: 0;
+  padding: 0;
+  height: 30px;
+  line-height: 30px;
+  }
+  li {
+    display: inline;
+    
+    margin-top: 10px;
   }
 </style>
 
 <main>
     <div style:position="relative" style:width={width}px style:height={height}px style:background-color="black">
       <div class="bar" style:background-color="red" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
-
+        <ul>
+          <li>
+            <img src="/statistics.svg" width={iconSize}px/>
+          </li>
+          <li>
+            <img src="/statistics.svg" width={iconSize}px/>
+          </li>
+          <li>
+            <img src="/statistics.svg" width={iconSize}px/>
+          </li>
+        </ul>
       </div>
       <div style:position="absolute" style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
         <P5 {sketch}/>
@@ -22,8 +43,8 @@
     export let width;
     export let height;
 
-    let verticalBarWidth = 30;
-    let horizontalBarHeight = 30;
+    let verticalBarWidth = 50;
+    let horizontalBarHeight = 50;
 
     let barWidth;
     let barHeight;
@@ -38,6 +59,10 @@
     let bufferWidth = 1000;
     let bufferHeight = 1000;
 
+    let iconSize;
+
+    let iconDownscaleFactor = 0.95;
+
     $: if(width<height-horizontalBarHeight){ //Vertical mode
         barWidth = width;
         barHeight = horizontalBarHeight;
@@ -49,6 +74,8 @@
 
         barXCoordinate = 0;
         barYCoordinate = (height-canvasSize)/2 - horizontalBarHeight;
+
+        iconSize = horizontalBarHeight*iconDownscaleFactor;
     }
     else if (width < height + verticalBarWidth){ //Transition mode
         barWidth = width;
@@ -61,6 +88,8 @@
 
         barXCoordinate = 0;
         barYCoordinate = 0;
+
+        iconSize = horizontalBarHeight*iconDownscaleFactor;
     }
     else{ //Landscape mode
         barHeight = height;
@@ -73,6 +102,8 @@
 
         barXCoordinate = (width - canvasSize)/2 + canvasSize;
         barYCoordinate = 0;
+
+        iconSize = verticalBarWidth*iconDownscaleFactor;
     }
 
 
