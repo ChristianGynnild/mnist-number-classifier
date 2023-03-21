@@ -1,9 +1,16 @@
 <script>
   import DrawableCanvas from "./lib/drawable_canvas.svelte";
+
+  let innerWidth;
+  let innerHeight;
 </script>
 
+<svelte:window bind:innerWidth bind:innerHeight />
+
 <main>
-  <DrawableCanvas></DrawableCanvas>
+  <DrawableCanvas width={innerWidth*0.9} height={innerHeight*0.9}>
+
+  </DrawableCanvas>
 </main>
 
 <!-- <script>

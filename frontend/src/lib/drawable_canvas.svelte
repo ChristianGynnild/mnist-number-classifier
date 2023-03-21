@@ -1,29 +1,29 @@
+<style>
+
+  .bar{
+
+
+  }
+</style>
+
 <main>
-    <div class="canvas-container centered" style="width:{innerWidth*0.9}px; height:{innerHeight*0.9}px; background-color:cadetblue">
-      
-      <div class="centered" style="width:{canvasSize}px; height:{canvasSize}px">
-          <P5 {sketch} />
+    <div style:position="relative" style:width={width}px style:height={height}px style:background-color="black">
+      <div class="bar" style:background-color="red" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
+
+      </div>
+      <div style:position="absolute" style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
+        <P5 {sketch}/>
       </div>
     </div>
   </main>
   
-  <svelte:window bind:innerWidth bind:innerHeight />
   
   <script>
     export let width;
     export let height;
 
-    //Remove
-    let innerWidth = 0;
-    let innerHeight = 0;
-
-    $: width = innerWidth;
-    $: height = innerHeight;
-    
-    //-----
-
-    let verticalBarWidth = 1;
-    let horizontalBarHeight = 1;
+    let verticalBarWidth = 30;
+    let horizontalBarHeight = 30;
 
     let barWidth;
     let barHeight;
@@ -34,6 +34,9 @@
 
     let barXCoordinate;
     let barYCoordinate;
+
+    let bufferWidth = 1000;
+    let bufferHeight = 1000;
 
     $: if(width<height-horizontalBarHeight){ //Vertical mode
         barWidth = width;
@@ -64,34 +67,19 @@
         barWidth = verticalBarWidth;
 
         canvasSize = Math.min(width, height);
-
+        
         canvasXCoordinate = (width-canvasSize)/2;
         canvasYCoordinate = 0;
 
         barXCoordinate = (width - canvasSize)/2 + canvasSize;
         barYCoordinate = 0;
     }
+
+
     
 
-    import p5Svelte from 'p5-svelte';
     import P5 from 'p5-svelte';
   
-    
-    $: condition = innerWidth*1.33 <= innerHeight
-  
-    let circleWidth = 55;
-    let circleHeight = 55;
-  
-    let canvasWidth = 0;
-    let canvasHeight = 0;
-  
-    let bufferWidth = 1000;
-    let bufferHeight = 1000;
-  
-    $: canvasWidth = innerWidth*0.9;
-    $: canvasHeight = innerHeight*0.9;
-  
-    $: canvasSize = Math.min(canvasWidth, canvasHeight);
   
     var drawingBuffer;
   
@@ -124,21 +112,5 @@
   </script>
   
   
-  
-  <style>
-    .canvas-container{
-      position: absolute;
-    }
-  
-    .centered{     
-      position: absolute;
-      top:0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      
-      margin: auto;
-    }
-  </style>
   
   
