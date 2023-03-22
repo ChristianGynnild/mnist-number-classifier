@@ -1,10 +1,13 @@
 
 <main>
     <div style:position="relative" style:width={width}px style:height={height}px style:background-color="black">
-      <div class="bar" style:background-color="red" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
-        <img src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*0}px style:left={firstBarElementXCoordinate + barElementXOffset*0}px/>
-        <img src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*1}px style:left={firstBarElementXCoordinate + barElementXOffset*1}px/>
-        <img src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*2}px style:left={firstBarElementXCoordinate + barElementXOffset*2}px/>
+      <div class="bar" style:background-color="#002233" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
+        <input type="image" on:click={() => console.log("cool")} 
+        src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*0}px style:left={firstBarElementXCoordinate + barElementXOffset*0}px/>
+        <input type="image" on:click={() => {drawingBuffer.loadPixels(); predict_number(drawingBuffer.pixels);}} 
+        src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*1}px style:left={firstBarElementXCoordinate + barElementXOffset*1}px/>
+        <input type="image" on:click={() => console.log("cool")} 
+        src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*2}px style:left={firstBarElementXCoordinate + barElementXOffset*2}px/>
       </div>
       <div style:position="absolute" style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
         <P5 {sketch}/>
@@ -14,6 +17,8 @@
   
   
   <script>
+
+
     export let width;
     export let height;
 
@@ -127,7 +132,7 @@
         p5.createCanvas(canvasSize, canvasSize);
         p5.background(200, 0, 100);
         drawingBuffer = p5.createGraphics(bufferWidth, bufferHeight);
-        drawingBuffer.background(200, 0, 100);
+        drawingBuffer.background(255, 255, 255);
       };
   
       
@@ -138,6 +143,11 @@
     };
   
   
+    function predict_number(pixels){
+      console.log("Cool")
+      console.log(pixels)
+    }
+
   </script>
   
   
