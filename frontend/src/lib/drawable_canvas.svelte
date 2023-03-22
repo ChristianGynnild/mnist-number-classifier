@@ -54,10 +54,10 @@
         canvasSize = Math.min(width, height);
 
         canvasXCoordinate = 0;
-        canvasYCoordinate = (height-canvasSize)/2.;
+        canvasYCoordinate = (height-(canvasSize+horizontalBarHeight))/2. + horizontalBarHeight;
 
         barXCoordinate = 0;
-        barYCoordinate = (height-canvasSize)/2 - horizontalBarHeight;
+        barYCoordinate = (height-(canvasSize+horizontalBarHeight))/2;
 
         iconSize = horizontalBarHeight*iconDownscaleFactor;
 
@@ -93,10 +93,10 @@
 
         canvasSize = Math.min(width, height);
         
-        canvasXCoordinate = (width-canvasSize)/2;
+        canvasXCoordinate = (width-(canvasSize+verticalBarWidth))/2;
         canvasYCoordinate = 0;
 
-        barXCoordinate = (width - canvasSize)/2 + canvasSize;
+        barXCoordinate = (width - (canvasSize+verticalBarWidth))/2 + canvasSize;
         barYCoordinate = 0;
 
         iconSize = verticalBarWidth*iconDownscaleFactor;
