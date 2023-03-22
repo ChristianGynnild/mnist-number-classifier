@@ -1,6 +1,6 @@
 
 <main>
-    <div style:position="relative" style:width={width}px style:height={height}px style:background-color="black">
+    <div style:position="absolute" style:top=0px style:left=0px style:width={width}px style:height={height}px style:background-color="black">
       <div class="bar" style:background-color="#002233" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
         <input type="image" on:click={() => console.log("cool")} 
         src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*0}px style:left={firstBarElementXCoordinate + barElementXOffset*0}px/>

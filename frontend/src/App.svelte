@@ -8,9 +8,7 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <main>
-  <DrawableCanvas width={innerWidth*0.9} height={innerHeight*0.9}>
-
-  </DrawableCanvas>
+  <DrawableCanvas width={innerWidth} height={innerHeight}></DrawableCanvas>
 </main>
 
 <!-- <script>
