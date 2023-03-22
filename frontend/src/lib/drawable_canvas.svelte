@@ -9,7 +9,7 @@
         <input type="image" on:click={() => console.log("cool")} 
         src="/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*2}px style:left={firstBarElementXCoordinate + barElementXOffset*2}px/>
       </div>
-      <div style:position="absolute" style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
+      <div style:position="absolute" style:background-color=white style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
         <P5 {sketch}/>
       </div>
     </div>
