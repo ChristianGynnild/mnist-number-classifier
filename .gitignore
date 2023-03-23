@@ -133,4 +133,7 @@ dmypy.json
 *.cache.dat
 *.cache.dir
 
+# Flask
+/static
+
 model_weights
