@@ -146,6 +146,9 @@
     function predict_number(pixels){
       console.log("Cool")
       console.log(pixels)
+
+      fetch("/predict").then((response) => response.json())
+      .then((data) => console.log(data));
     }
 
   </script>
