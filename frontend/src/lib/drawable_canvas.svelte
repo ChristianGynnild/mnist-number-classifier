@@ -147,7 +147,16 @@
       console.log("Cool")
       console.log(pixels)
 
-      fetch("/predict").then((response) => response.json())
+      fetch("/predict", {
+        method:'POST',
+        headers: {
+          'Accept':'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({hello: "WORLD"}),
+
+      }
+      ).then((response) => response.json())
       .then((data) => console.log(data));
     }
 
