@@ -12,8 +12,7 @@ def hello_world():
 @app.route("/predict", methods = ['POST'])
 def predict():
     data = request.get_json()
-    print(data)
-
+    
     response = {'HELLO': 'from python', 'prediction': 3}
     response = json.dumps(response)
     

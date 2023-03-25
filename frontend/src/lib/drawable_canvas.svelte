@@ -35,8 +35,8 @@
     let barXCoordinate;
     let barYCoordinate;
 
-    let bufferWidth = 1000;
-    let bufferHeight = 1000;
+    let bufferWidth = 500;
+    let bufferHeight = 500;
 
     let iconSize;
     let iconDownscaleFactor = 0.8;
@@ -121,7 +121,7 @@
       p5.draw = () => {
         if (p5.mouseIsPressed) {
           drawingBuffer.fill(0);
-          drawingBuffer.ellipse(p5.mouseX/canvasSize*bufferWidth, p5.mouseY/canvasSize*bufferHeight, 80, 80);
+          drawingBuffer.ellipse(p5.mouseX/canvasSize*bufferWidth, p5.mouseY/canvasSize*bufferHeight, 40, 40);
         } 
   
         p5.image(drawingBuffer, 0, 0, canvasSize, canvasSize);
@@ -142,22 +142,15 @@
       }
     };
   
-  
+    const predict_request_worker = new Worker("static/predict_request_worker.js");
+    console.log("Message posted to worker");
+    predict_request_worker.onmessage = (e) => {
+      let result = e.data;
+      console.log(`Message received from worker: ${e.data}`);
+    };
+
     function predict_number(pixels){
-      console.log("Cool")
-      console.log(pixels)
-
-      fetch("/predict", {
-        method:'POST',
-        headers: {
-          'Accept':'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({hello: "WORLD"}),
-
-      }
-      ).then((response) => response.json())
-      .then((data) => console.log(data));
+      predict_request_worker.postMessage({"pixels":pixels});
     }
 
   </script>
