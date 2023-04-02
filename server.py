@@ -3,8 +3,12 @@ import json
 from PIL import Image
 import PIL
 import numpy as np
+import ai
 
 app = Flask(__name__)
+
+model = ai.load_model()
+
 
 @app.route("/")
 def hello_world():
@@ -26,8 +30,10 @@ def predict():
     image = Image.fromarray(pixels, mode="RGBA")
     image = image.resize((28, 28), Image.NEAREST)
     
+    number = ai.predict(image)
+    print(number)
+
     image.convert('RGB')
-    image.save("Downsampled-image.png", "png")
 
     response = {'HELLO': 'from python', 'prediction': 3}
     response = json.dumps(response)

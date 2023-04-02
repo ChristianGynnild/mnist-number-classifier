@@ -52,7 +52,11 @@ def test(model, features, labels, loss_function):
     correct /= dataset_size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-
+def load_model():
+    model = NeuralNetwork().to(device)
+    
+    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
+    except Exception as e:print(f"Failed to load model weights. Exception:{e}")
 
 def train(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(np.array(list(map(dataset.image_preprocessing, dataset.load_images(filepath))))))     
@@ -63,11 +67,7 @@ def train(epochs=5):
     test_images =     load_images(TEST_IMAGES_PATH)
     test_labels =     load_labels(TEST_LABELS_PATH)
 
-    model = NeuralNetwork().to(device)
-    print(model)
-    
-    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
-    except Exception:pass
+    model = load_model()
 
     loss_function = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
@@ -84,10 +84,7 @@ def train(epochs=5):
     torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
     print(f"Saved PyTorch Model State to {MODEL_WEIGHTS_PATH}")
 
-def predict(image_path):
-    image = Image.open(image_path)
-    print("Opened:", image_path)
-    print("shape:",image.size)
+def predict(image):
     width_height_difference = image.width-image.height
 
     if width_height_difference<0:
@@ -110,7 +107,7 @@ def predict(image_path):
 
     image = image.convert('L') # Turn the picture grayscale
 
-    array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1,28,28)))
+    array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1, 1,28,28)))
 
 
     model = NeuralNetwork().to(device)
@@ -118,5 +115,6 @@ def predict(image_path):
     except Exception:pass
     model.eval()
     prediction = model(torch.from_numpy(array))
-    print(int(prediction[0].argmax(0)))
-    image.save("twst.jpeg", "png")
+    prediction = int(prediction[0].argmax(0))
+    print(prediction)
+    return prediction
