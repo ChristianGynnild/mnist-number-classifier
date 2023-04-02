@@ -84,7 +84,7 @@ def train(epochs=5):
     torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
     print(f"Saved PyTorch Model State to {MODEL_WEIGHTS_PATH}")
 
-def predict(image):
+def predict(model, image):
     width_height_difference = image.width-image.height
 
     if width_height_difference<0:
@@ -107,7 +107,7 @@ def predict(image):
 
     image = image.convert('L') # Turn the picture grayscale
 
-    array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1, 1,28,28)))
+    array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1, 1, 28,28)))
 
 
     model = NeuralNetwork().to(device)

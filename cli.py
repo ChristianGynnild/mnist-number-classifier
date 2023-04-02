@@ -16,7 +16,8 @@ def train(ephocs):
 @cli.command()
 @click.argument('image_path')
 def predict(image_path):
-    model.predict(image_path)
+    _model = model.load_model()
+    model.predict(_model, image_path)
     
     
 @cli.group()

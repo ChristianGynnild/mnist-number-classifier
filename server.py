@@ -23,14 +23,13 @@ def predict():
     channels_amount = data['channels_amount']
     columns_amount = data['columns_amount']
     rows_amount = data['rows_amount']
+
     pixels = data['pixels']
     pixels = np.array(list(pixels.values())).reshape((columns_amount, rows_amount, channels_amount)).astype('uint8')
-
-
     image = Image.fromarray(pixels, mode="RGBA")
     image = image.resize((28, 28), Image.NEAREST)
     
-    number = ai.predict(image)
+    number = ai.predict(model, image)
     print(number)
 
     image.convert('RGB')
