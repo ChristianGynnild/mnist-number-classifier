@@ -12,7 +12,7 @@ def hello_world():
 
 
 
-@app.route("/predict", methods = ['POST'])
+@app.route("/api/predict", methods = ['POST'])
 def predict():
     data = request.get_json()
 

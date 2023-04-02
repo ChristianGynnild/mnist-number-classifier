@@ -10,7 +10,7 @@ onmessage = async (e) => {
     });
     console.log("Proccesed json")
 
-    await fetch("/predict", {
+    await fetch("/api/predict", {
       method:'POST',
       headers: {
         'Accept':'application/json',
