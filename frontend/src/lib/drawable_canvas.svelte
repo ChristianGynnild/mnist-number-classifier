@@ -3,11 +3,11 @@
     <div style:position="absolute" style:top=0px style:left=0px style:width={width}px style:height={height}px style:background-color="black">
       <div class="bar" style:background-color="#002233" style:position="absolute" style:width={barWidth}px style:height={barHeight}px style:left={barXCoordinate}px style:bottom={barYCoordinate}px>
         <input type="image" on:click={() => console.log("cool")} 
-        src="/static/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*0}px style:left={firstBarElementXCoordinate + barElementXOffset*0}px/>
+        src={reload_icon} width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*0}px style:left={firstBarElementXCoordinate + barElementXOffset*0}px/>
         <input type="image" on:click={() => {drawingBuffer.loadPixels(); predict_number(drawingBuffer.pixels);}} 
-        src="/static/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*1}px style:left={firstBarElementXCoordinate + barElementXOffset*1}px/>
+        src={predict_icon} width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*1}px style:left={firstBarElementXCoordinate + barElementXOffset*1}px/>
         <input type="image" on:click={() => console.log("cool")} 
-        src="/static/statistics.svg" width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*2}px style:left={firstBarElementXCoordinate + barElementXOffset*2}px/>
+        src={info_icon} width={iconSize}px style:position="absolute" style:top={firstBarElementYCoordinate + barElementYOffset*2}px style:left={firstBarElementXCoordinate + barElementXOffset*2}px/>
       </div>
       <div style:position="absolute" style:background-color=white style:width={canvasSize}px style:height={canvasSize}px style:left={canvasXCoordinate}px style:bottom={canvasYCoordinate}px>
         <P5 {sketch}/>
@@ -17,8 +17,11 @@
   
   
   <script>
+    import reload_icon from "./assets/refresh.svg"
+    import predict_icon from "./assets/statistics.svg"
+    import info_icon from "./assets/info.svg"
 
-
+ 
     export let width;
     export let height;
 
@@ -141,8 +144,8 @@
         p5.resizeCanvas(canvasSize, canvasSize, true);
       }
     };
-  
-    const predict_request_worker = new Worker("static/predict_request_worker.js");
+    
+    const predict_request_worker = new Worker(new URL('./predict_request_worker.js', import.meta.url));
     console.log("Message posted to worker");
     predict_request_worker.onmessage = (e) => {
       let result = e.data;
