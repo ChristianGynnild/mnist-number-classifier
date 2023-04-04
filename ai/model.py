@@ -58,6 +58,8 @@ def load_model():
     try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
     except Exception as e:print(f"Failed to load model weights. Exception:{e}")
 
+    return model
+
 def train(epochs=5):
     load_images = lambda filepath: torch.from_numpy(dataset.to_batches(np.array(list(map(dataset.image_preprocessing, dataset.load_images(filepath))))))     
     load_labels = lambda filepath: torch.from_numpy(dataset.to_batches(dataset.load_labels(filepath)))
