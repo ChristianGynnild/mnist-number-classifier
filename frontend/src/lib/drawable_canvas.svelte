@@ -122,8 +122,9 @@
   
     const sketch = (p5) => {
       p5.draw = () => {
-        if (p5.mouseIsPressed) {
-          drawingBuffer.fill(0);
+        if (p5.mouseIsPressed && p5.mouseX < canvasSize) {
+          drawingBuffer.noStroke();
+          drawingBuffer.fill(255);
           drawingBuffer.ellipse(p5.mouseX/canvasSize*bufferWidth, p5.mouseY/canvasSize*bufferHeight, 40, 40);
         } 
   
@@ -135,7 +136,7 @@
         p5.createCanvas(canvasSize, canvasSize);
         p5.background(200, 0, 100);
         drawingBuffer = p5.createGraphics(bufferWidth, bufferHeight);
-        drawingBuffer.background(255, 255, 255);
+        drawingBuffer.background(0, 0, 0);
       };
   
       

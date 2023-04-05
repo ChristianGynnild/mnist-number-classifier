@@ -55,7 +55,7 @@ def test(model, features, labels, loss_function):
 def load_model():
     model = NeuralNetwork().to(device)
     
-    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
+    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH, map_location=torch.device(device)))
     except Exception as e:print(f"Failed to load model weights. Exception:{e}")
 
     return model
@@ -111,10 +111,6 @@ def predict(model, image):
 
     array = dataset.image_preprocessing(np.array(image, dtype=np.float32).reshape((1, 1, 28,28)))
 
-
-    model = NeuralNetwork().to(device)
-    try:model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
-    except Exception:pass
     model.eval()
     prediction = model(torch.from_numpy(array))
     prediction = int(prediction[0].argmax(0))
